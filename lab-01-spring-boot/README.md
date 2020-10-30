@@ -1,6 +1,7 @@
 # Lab 01 - Spring Boot
 
-In the root folder, create a Spring Boot application module that will later serve our ezGroceries API. We will start out minimalistic and gradually add dependencies and capabilities.
+In the root folder, create a Spring Boot application module that will later serve our ezGroceries API. We will start out
+ minimalistic and gradually add dependencies and capabilities.
 
 In this short lab we want to focus on making sure the applications starts successfully and serves the Spring Boot Actuator endpoints. 
 
