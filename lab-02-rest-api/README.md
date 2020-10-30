@@ -2,7 +2,8 @@
 
 In close collaboration with the Mobile teams, our ezGroceries team has designed a REST API that will cover all the functionalities of the initial minimum viable product.
 
-To make sure the Mobile app can start their implementation asap we have decided to implement these APIs using dummy values before we integrate with the third party cocktail and meal APIs.
+To make sure the Mobile app can start their implementation asap we have decided to implement these APIs using dummy values before we
+ integrate with the third party cocktail and meal APIs.
 
 Other technical decisions that were taken during the design include:
 
