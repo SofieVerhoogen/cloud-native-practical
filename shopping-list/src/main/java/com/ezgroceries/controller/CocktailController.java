@@ -1,23 +1,69 @@
 package com.ezgroceries.controller;
 
-import com.ezgroceries.service.CocktailResource;
-import jdk.internal.module.Resources;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+        import com.ezgroceries.service.CocktailResource;
+        import com.ezgroceries.service.ShoppingList;
+        import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+        import java.util.ArrayList;
+        import java.util.Arrays;
+        import java.util.List;
+        import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/cocktails", produces = "application/json")
+@RequestMapping(produces = "application/json")
 public class CocktailController {
 
-    @GetMapping
-    public Resources<CocktailResource> get(@RequestParam String search) {
-        return new Resources<>(getDummyResources());
+    private List<CocktailResource> cocktailResources;
+    private List<ShoppingList> shoppingLists = new ArrayList<>();
+    private ShoppingList shoppingList;
+
+    @GetMapping(value= "/cocktails")
+    public List<CocktailResource> get(@RequestParam String search) {
+        cocktailResources = getDummyResources();
+        return cocktailResources;
+    }
+
+    @GetMapping(value= "/cocktails/{cocktailId}")
+    public CocktailResource getCocktail(@PathVariable UUID cocktailId) {
+        System.out.println("get cocktail: " + cocktailId);
+        for (CocktailResource resource : cocktailResources){
+            if (resource.getCocktailId().equals(cocktailId)){
+                return resource;
+            }
+        }
+        return null;
+    }
+
+    @GetMapping(value="/shopping-lists")
+    public List<ShoppingList> getShoppingLists(){
+        System.out.println("getShoppingLists");
+        return shoppingLists;
+    }
+    @GetMapping(value= "/shopping-lists/{shoppingListId}")
+    public ShoppingList getShoppingList(@PathVariable UUID shoppingListId){
+        shoppingList.setShoppingListId(shoppingListId);
+        return shoppingList;
+    }
+
+    @PostMapping(value="/shopping-lists")
+    public ShoppingList createShoppingList(@RequestBody ShoppingList newShoppingList){
+        shoppingList = new ShoppingList(UUID.randomUUID(), newShoppingList.getName());
+        shoppingLists.add(shoppingList);
+        return shoppingList;
+    }
+
+    @PostMapping(value="/shopping-lists/{shoppingListId}/cocktails")
+    public UUID addCocktail(@PathVariable UUID shoppingListId, @RequestBody CocktailResource cocktailResource){
+        for (ShoppingList list : shoppingLists){
+            if (list.getShoppingListId().equals(shoppingListId)){
+                shoppingList = list;
+            }
+        }
+        for (CocktailResource resource : cocktailResources){
+            if (resource.getCocktailId().equals(cocktailResource.getCocktailId())){
+                shoppingList.setShoppingItems(resource.getIngredients());
+            }
+        }return cocktailResource.getCocktailId();
     }
 
     private List<CocktailResource> getDummyResources() {
