@@ -1,17 +1,10 @@
 package com.ezgroceries.service;
 
-<<<<<<< HEAD
-=======
-import com.ezgroceries.model.Cocktail;
-
-import java.util.ArrayList;
->>>>>>> 0967b01d99a6d74b06ae53f9bd744aa642c7bc1c
 import java.util.List;
 import java.util.UUID;
 
 public class CocktailResource {
 
-<<<<<<< HEAD
     private UUID cocktailId;
     private String cocktailName;
     private String cocktailGlass;
@@ -77,18 +70,4 @@ public class CocktailResource {
         this.ingredients = ingredients;
     }
 
-=======
-    private Cocktail cocktail;
-    public CocktailResource(){
-
-    }
-    public CocktailResource(UUID uuid, String cocktailName, String cocktail_glass, String instructions, String image, List<String> ingredients) {
-        cocktail.setCocktailID(uuid);
-        cocktail.setName(cocktailName);
-        cocktail.setGlass(cocktail_glass);
-        cocktail.setInstructions(instructions);
-        cocktail.setInstructions(image);
-        cocktail.setIngredients((ArrayList) ingredients);
-    }
->>>>>>> 0967b01d99a6d74b06ae53f9bd744aa642c7bc1c
 }

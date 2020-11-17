@@ -1,11 +1,4 @@
 package com.ezgroceries.model;
-
-<<<<<<< HEAD
-
-public class Cocktail {
-
-}
-=======
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -18,7 +11,7 @@ public class Cocktail {
     private String glass;
     private String instructions;
     private Image image;
-    private List ingredients = new List<String>();
+    private List ingredients;
 
     public long getCocktailID() {
         return cocktailID;
@@ -71,4 +64,3 @@ public class Cocktail {
         this.instructions = instructions;
     }
 }
->>>>>>> 0967b01d99a6d74b06ae53f9bd744aa642c7bc1c
