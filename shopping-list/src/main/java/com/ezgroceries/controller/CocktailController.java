@@ -1,24 +1,33 @@
 package com.ezgroceries.controller;
+ import com.ezgroceries.client.CocktailDBClient;
+ import com.ezgroceries.client.CocktailDBResponse;
  import com.ezgroceries.service.CocktailResource;
  import com.ezgroceries.service.ShoppingList;
+ import io.micrometer.core.instrument.util.StringUtils;
  import org.springframework.web.bind.annotation.*;
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.List;
  import java.util.UUID;
+ import java.util.stream.Collectors;
+ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(produces = "application/json")
 public class CocktailController {
 
     private List<CocktailResource> cocktailResources;
+    private CocktailDBClient cocktailDBClient;
     private List<ShoppingList> shoppingLists = new ArrayList<>();
     private ShoppingList shoppingList;
 
+    private CocktailController(CocktailDBClient cocktailDBClient) { this.cocktailDBClient = cocktailDBClient;}
+
     @GetMapping(value= "/cocktails")
     public List<CocktailResource> get(@RequestParam String search) {
-        cocktailResources = getDummyResources();
-        return cocktailResources;
+        return convertCocktails(cocktailDBClient.searchCocktails(search));
+        //*cocktailResources = getDummyResources();
+        //return cocktailResources;
     }
 
     @GetMapping(value= "/cocktails/{cocktailId}")
@@ -63,6 +72,23 @@ public class CocktailController {
             }
         }
         return cocktailResource.getCocktailId();
+    }
+
+    private List<CocktailResource> convertCocktails(CocktailDBResponse cocktailDBResponse) {
+        return cocktailDBResponse.getDrinks().stream()
+                .map(drinkResource -> new CocktailResource(
+                UUID.randomUUID(),
+                drinkResource.getStrDrink(),
+                drinkResource.getStrGlass(),
+                drinkResource.getStrInstructions(),
+                drinkResource.getStrDrinkThumb(),
+                Stream.of(
+                        drinkResource.getStrIngredient1(),
+                        drinkResource.getStrIngredient2(),
+                        drinkResource.getStrIngredient3(),
+                        drinkResource.getStrIngredient4()
+                        ).filter(StringUtils::isNotBlank).collect(Collectors.toList()))
+                ).collect(Collectors.toList());
     }
 
     private List<CocktailResource> getDummyResources() {
