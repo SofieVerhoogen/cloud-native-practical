@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +24,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@ComponentScan("com.ezgroceries")
+@ComponentScan("com.ezgroceries.controller")
 
 public class MockMvcTests {
     @Autowired
@@ -38,12 +39,13 @@ public class MockMvcTests {
     @Test
     public void getTest() throws Exception {
 
-       given(cocktailDBClient.searchCocktails("Russian")).willReturn(getCocktails());
+       given(cocktailDBClient.searchCocktails("Russian")).willReturn(getMockedCocktails());
 
-        this.mockMvc
+        mockMvc
                 .perform(get("/cocktails").param("search", "Russian")
                         .accept(MediaType.parseMediaType("application/json")))
                 .andExpect(status().isOk())
+                .andExpect((ResultMatcher) content().contentType(MediaType.parseMediaType("application/json")))
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].cocktailName").value("Black Russian"))
                 .andExpect(jsonPath("$[0].cocktailGlass").value("Old-fashioned glass"))
@@ -62,16 +64,16 @@ public class MockMvcTests {
                 ;
     }
 
-    private CocktailDBResponse getCocktails() {
-            List<CocktailDBResponse.DrinkResource> cocktails1 = new ArrayList<>();
-            CocktailDBResponse.DrinkResource drinkResource = new CocktailDBResponse.DrinkResource();
-            drinkResource.setStrDrink("Black Russion");
-            drinkResource.setStrGlass("Old-fashioned glass");
+    private CocktailDBResponse getMockedCocktails() {
+        List<CocktailDBResponse.DrinkResource> cocktails = new ArrayList<>();
+        CocktailDBResponse.DrinkResource drinkResource = new CocktailDBResponse.DrinkResource();
+        drinkResource.setStrDrink("Black Russian");
+        drinkResource.setStrGlass("Old-fashioned glass");
         drinkResource.setStrInstructions("Pour the ingredients into an old fashioned glass filled with ice cubes. Stir gently");
         drinkResource.setStrDrinkThumb("https://www.thecocktaildb.com/images/media/drink/wpxpvu1439905379.jpg");
         drinkResource.setStrIngredient1("Coffee liqueur");
         drinkResource.setStrIngredient2("Vodka");
-        cocktails1.add(drinkResource);
+        cocktails.add(drinkResource);
         drinkResource = new CocktailDBResponse.DrinkResource();
         drinkResource.setStrDrink("White Russian");
         drinkResource.setStrGlass("Old-fashioned glass");
@@ -79,9 +81,9 @@ public class MockMvcTests {
         drinkResource.setStrDrinkThumb("https://www.thecocktaildb.com/images/media/drink/vsrupw1472405732.jpg");
         drinkResource.setStrIngredient1("Vodka");
         drinkResource.setStrIngredient2("Water");
-        cocktails1.add(drinkResource);
+        cocktails.add(drinkResource);
         CocktailDBResponse cocktailDBResponse = new CocktailDBResponse();
-        cocktailDBResponse.setDrinks(cocktails1);
+        cocktailDBResponse.setDrinks(cocktails);
         return cocktailDBResponse;
     }
 }

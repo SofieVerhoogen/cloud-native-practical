@@ -16,7 +16,7 @@ package com.ezgroceries.controller;
 @RequestMapping(produces = "application/json")
 public class CocktailController {
 
-    private List<CocktailResource> cocktailResources;
+    private List<CocktailResource> cocktailResources = new ArrayList<>();
     private CocktailDBClient cocktailDBClient;
     private List<ShoppingList> shoppingLists = new ArrayList<>();
     private ShoppingList shoppingList;
