@@ -25,6 +25,7 @@ public class CocktailController {
 
     @GetMapping(value= "/cocktails")
     public List<CocktailResource> get(@RequestParam String search) {
+        System.out.print("get here");
         return convertCocktails(cocktailDBClient.searchCocktails(search));
         //*cocktailResources = getDummyResources();
         //return cocktailResources;
