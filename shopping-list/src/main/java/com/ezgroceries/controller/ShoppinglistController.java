@@ -1,19 +1,18 @@
 package com.ezgroceries.controller;
 
 import com.ezgroceries.service.CocktailResource;
-import com.ezgroceries.service.ShoppingList;
+import com.ezgroceries.service.ShoppingListResource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/shopping-lists")
 public class ShoppinglistController {
 
-    private ShoppingList shoppingList;
-    private List<ShoppingList> shoppingLists = new ArrayList<>();
+    private ShoppingListResource shoppingList;
+    private List<ShoppingListResource> shoppingLists = new ArrayList<>();
     private CocktailResource cocktailService;
 /**
 

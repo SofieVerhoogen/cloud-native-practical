@@ -1,17 +1,27 @@
-package com.ezgroceries.service;
+package com.ezgroceries.entities;
 
-import java.util.ArrayList;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.UUID;
 
-public class ShoppingList {
+@Entity
+@Table(name = "shoppinglist")
+public class ShoppingListEntity {
 
+    @Id
+    @Column(name = "ID")
     private UUID shoppingListId;
+
     private String name;
+
     private List<String> shoppingItems;
 
-    public ShoppingList(UUID shoppingListId , String name){
-        this.shoppingListId = shoppingListId;
+    public ShoppingListEntity(){}
+
+    public ShoppingListEntity(String name) {
         this.name = name;
     }
 
@@ -27,8 +37,8 @@ public class ShoppingList {
         return name;
     }
 
-    public void setShoppingListName(String shoppingListName) {
-        this.name = shoppingListName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<String> getShoppingItems() {
@@ -38,5 +48,4 @@ public class ShoppingList {
     public void setShoppingItems(List<String> shoppingItems) {
         this.shoppingItems = shoppingItems;
     }
-
 }
