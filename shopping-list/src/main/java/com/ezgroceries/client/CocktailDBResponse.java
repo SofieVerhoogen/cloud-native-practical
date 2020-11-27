@@ -24,6 +24,7 @@ public class CocktailDBResponse {
         private String strIngredient3;
         private String strIngredient4;
 
+
         public String getIdDrink() {
             return idDrink;
         }

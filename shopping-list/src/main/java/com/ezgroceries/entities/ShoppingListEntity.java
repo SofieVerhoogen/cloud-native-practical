@@ -1,14 +1,12 @@
 package com.ezgroceries.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "shoppinglist")
+@Table(name = "shopping_list")
 public class ShoppingListEntity {
 
     @Id
@@ -17,17 +15,21 @@ public class ShoppingListEntity {
 
     private String name;
 
-    private List<String> shoppingItems;
+    @ManyToMany
+    @JoinTable(
+            name = "COCKTAIL_SHOPPING_LIST",
+            joinColumns = @JoinColumn(name = "SHOPPING_LIST_ID"),
+            inverseJoinColumns = @JoinColumn(name = "COCKTAIL_ID"))
+    private Set<CocktailEntity> cocktails;
 
     public ShoppingListEntity(){}
 
     public ShoppingListEntity(String name) {
+        this.shoppingListId = UUID.randomUUID();
         this.name = name;
     }
 
-    public UUID getShoppingListId() {
-        return shoppingListId;
-    }
+    public UUID getShoppingListId() { return shoppingListId; }
 
     public void setShoppingListId(UUID shoppingListId) {
         this.shoppingListId = shoppingListId;
@@ -41,11 +43,7 @@ public class ShoppingListEntity {
         this.name = name;
     }
 
-    public List<String> getShoppingItems() {
-        return shoppingItems;
-    }
-
-    public void setShoppingItems(List<String> shoppingItems) {
-        this.shoppingItems = shoppingItems;
+    public void setCocktails(Set<CocktailEntity> cocktails) {
+        this.cocktails = cocktails;
     }
 }

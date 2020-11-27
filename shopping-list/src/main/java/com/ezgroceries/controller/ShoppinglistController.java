@@ -1,52 +1,51 @@
 package com.ezgroceries.controller;
 
+import com.ezgroceries.entities.ShoppingListEntity;
 import com.ezgroceries.service.CocktailResource;
 import com.ezgroceries.service.ShoppingListResource;
+import com.ezgroceries.service.ShoppingListService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/shopping-lists")
+@RequestMapping(produces = "application/json")
 public class ShoppinglistController {
 
-    private ShoppingListResource shoppingList;
-    private List<ShoppingListResource> shoppingLists = new ArrayList<>();
-    private CocktailResource cocktailService;
-/**
+    private ShoppingListService shoppingListService;
+
+    private ShoppinglistController(ShoppingListService shoppingListService){
+        this.shoppingListService = shoppingListService;
+    }
 
     @GetMapping(value="/shopping-lists")
-    public List<ShoppingList> getShoppingLists(){
-        System.out.println("getShoppingLists");
-        return shoppingLists;
+    public List<ShoppingListEntity> getShoppingLists(){
+        return shoppingListService.findAllShoppingLists();
     }
+
     @GetMapping(value= "/shopping-lists/{shoppingListId}")
-    public ShoppingList getShoppingList(@PathVariable UUID shoppingListId){
-        shoppingList.setShoppingListId(shoppingListId);
-        return shoppingList;
+    public ShoppingListEntity getShoppingList(@PathVariable UUID shoppingListId){
+        return shoppingListService.findShoppingList(shoppingListId);
     }
 
     @PostMapping(value="/shopping-lists")
-    public ShoppingList createShoppingList(@RequestBody ShoppingList newShoppingList){
-        shoppingList = new ShoppingList(UUID.randomUUID(), newShoppingList.getName());
-        shoppingLists.add(shoppingList);
-        return shoppingList;
+    public ShoppingListResource createShoppingList(@RequestBody String shoppingListName){
+        return shoppingListService.create(shoppingListName);
     }
 
     @PostMapping(value="/shopping-lists/{shoppingListId}/cocktails")
-    public UUID addCocktail(@PathVariable UUID shoppingListId, @RequestBody CocktailResource cocktailResource) {
-        for (ShoppingList list : shoppingLists) {
-            if (list.getShoppingListId().equals(shoppingListId)) {
-                shoppingList = list;
-            }
-        }
-        for (CocktailResource resource : cocktailResources) {
-            if (resource.getCocktailId().equals(cocktailResource.getCocktailId())) {
-                shoppingList.setShoppingItems(resource.getIngredients());
-            }
-        }
-        return cocktailResource.getCocktailId();
+    public ShoppingListEntity addCocktail(@PathVariable UUID shoppingListId, @RequestBody List<Map<String,String>> cocktails) {
+        ShoppingListEntity shoppingList = shoppingListService.findShoppingList(shoppingListId);
+        List<String> cocktailIDs = cocktails.stream()
+                .map(stringStringEntry -> stringStringEntry.get("cocktailId"))
+                .collect(Collectors.toList());
+        return shoppingListService.addCocktails(shoppingListId,cocktailIDs);
+       // for (CocktailResource resource : cocktailResource) {
+       //     if (resource.getCocktailId().equals(cocktailResource.getCocktailId())) {
+       //         shoppingList.setShoppingItems(resource.getIngredients());
+       //     }
+        //}
+        //return cocktailResource.getCocktailId();
     }
-    **/
 }

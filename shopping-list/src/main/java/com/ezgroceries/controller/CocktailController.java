@@ -2,8 +2,10 @@ package com.ezgroceries.controller;
  import com.ezgroceries.client.CocktailDBClient;
  import com.ezgroceries.client.CocktailDBResponse;
  import com.ezgroceries.service.CocktailResource;
+ import com.ezgroceries.service.CocktailService;
  import com.ezgroceries.service.ShoppingListResource;
  import io.micrometer.core.instrument.util.StringUtils;
+ import org.springframework.beans.factory.annotation.Autowired;
  import org.springframework.web.bind.annotation.*;
  import java.util.ArrayList;
  import java.util.Arrays;
@@ -16,24 +18,19 @@ package com.ezgroceries.controller;
 @RequestMapping(produces = "application/json")
 public class CocktailController {
 
-    private List<CocktailResource> cocktailResources = new ArrayList<>();
-    private CocktailDBClient cocktailDBClient;
-    private List<ShoppingListResource> shoppingLists = new ArrayList<>();
-    private ShoppingListResource shoppingList;
+    private CocktailService cocktailService;
 
-    private CocktailController(CocktailDBClient cocktailDBClient) { this.cocktailDBClient = cocktailDBClient;}
+    private CocktailController(CocktailService cocktailService) {
+        this.cocktailService = cocktailService;
+    }
 
     @GetMapping(value= "/cocktails")
     public List<CocktailResource> get(@RequestParam String search) {
-        System.out.print("get here");
-        return convertCocktails(cocktailDBClient.searchCocktails(search));
-        //*cocktailResources = getDummyResources();
-        //return cocktailResources;
+        return convertCocktails(cocktailService.searchCocktails(search));
     }
 
-    @GetMapping(value= "/cocktails/{cocktailId}")
+ /**   @GetMapping(value= "/cocktails/{cocktailId}")
     public CocktailResource getCocktail(@PathVariable UUID cocktailId) {
-        System.out.println("get cocktail: " + cocktailId);
         for (CocktailResource resource : cocktailResources){
             if (resource.getCocktailId().equals(cocktailId)){
                 return resource;
@@ -41,39 +38,7 @@ public class CocktailController {
         }
         return null;
     }
-
-    @GetMapping(value="/shopping-lists")
-    public List<ShoppingListResource> getShoppingLists(){
-        System.out.println("getShoppingLists");
-        return shoppingLists;
-    }
-    @GetMapping(value= "/shopping-lists/{shoppingListId}")
-    public ShoppingListResource getShoppingList(@PathVariable UUID shoppingListId){
-        shoppingList.setShoppingListId(shoppingListId);
-        return shoppingList;
-    }
-
-    @PostMapping(value="/shopping-lists")
-    public ShoppingListResource createShoppingList(@RequestBody ShoppingListResource newShoppingList){
-        shoppingList = new ShoppingListResource(UUID.randomUUID(), newShoppingList.getName());
-        shoppingLists.add(shoppingList);
-        return shoppingList;
-    }
-
-    @PostMapping(value="/shopping-lists/{shoppingListId}/cocktails")
-    public UUID addCocktail(@PathVariable UUID shoppingListId, @RequestBody CocktailResource cocktailResource) {
-        for (ShoppingListResource list : shoppingLists) {
-            if (list.getShoppingListId().equals(shoppingListId)) {
-                shoppingList = list;
-            }
-        }
-        for (CocktailResource resource : cocktailResources) {
-            if (resource.getCocktailId().equals(cocktailResource.getCocktailId())) {
-                shoppingList.setShoppingItems(resource.getIngredients());
-            }
-        }
-        return cocktailResource.getCocktailId();
-    }
+**/
 
     private List<CocktailResource> convertCocktails(CocktailDBResponse cocktailDBResponse) {
         return cocktailDBResponse.getDrinks().stream()
