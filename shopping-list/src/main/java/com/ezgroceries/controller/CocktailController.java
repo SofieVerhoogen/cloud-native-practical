@@ -26,7 +26,7 @@ public class CocktailController {
 
     @GetMapping(value= "/cocktails")
     public List<CocktailResource> get(@RequestParam String search) {
-        return convertCocktails(cocktailService.searchCocktails(search));
+        return cocktailService.searchCocktails(search);
     }
 
  /**   @GetMapping(value= "/cocktails/{cocktailId}")

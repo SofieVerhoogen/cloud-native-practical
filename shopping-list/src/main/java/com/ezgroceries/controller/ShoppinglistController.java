@@ -20,7 +20,7 @@ public class ShoppinglistController {
     }
 
     @GetMapping(value="/shopping-lists")
-    public List<ShoppingListEntity> getShoppingLists(){
+    public List<ShoppingListResource> getShoppingLists(){
         return shoppingListService.findAllShoppingLists();
     }
 
@@ -30,8 +30,8 @@ public class ShoppinglistController {
     }
 
     @PostMapping(value="/shopping-lists")
-    public ShoppingListResource createShoppingList(@RequestBody String shoppingListName){
-        return shoppingListService.create(shoppingListName);
+    public ShoppingListResource createShoppingList(@RequestBody Map<String,String> shoppingListName){
+        return shoppingListService.create(shoppingListName.get("name"));
     }
 
     @PostMapping(value="/shopping-lists/{shoppingListId}/cocktails")

@@ -46,4 +46,7 @@ public class ShoppingListEntity {
     public void setCocktails(Set<CocktailEntity> cocktails) {
         this.cocktails = cocktails;
     }
+    public Set<CocktailEntity> getCocktails(){
+        return cocktails;
+    }
 }

@@ -5,13 +5,6 @@ import java.util.List;
 public class CocktailDBResponse {
 
     private List<DrinkResource> drinks;
-    public List<DrinkResource> getDrinks() {
-        return drinks;
-    }
-
-    public void setDrinks(List<DrinkResource> drinks) {
-        this.drinks = drinks;
-    }
 
     public static class DrinkResource {
         private String idDrink;
@@ -96,5 +89,12 @@ public class CocktailDBResponse {
         public void setStrIngredient4(String strIngredient4) {
             this.strIngredient4 = strIngredient4;
         }
+    }
+    public List<DrinkResource> getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(List<DrinkResource> drinks) {
+        this.drinks = drinks;
     }
 }

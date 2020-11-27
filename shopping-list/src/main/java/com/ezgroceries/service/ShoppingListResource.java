@@ -8,6 +8,8 @@ public class ShoppingListResource {
 
     private UUID shoppingListId;
     private String name;
+    private List<String> shoppingItems;
+
 
     public ShoppingListResource(){}
 
@@ -31,5 +33,14 @@ public class ShoppingListResource {
     public void setName(String shoppingListName) {
         this.name = shoppingListName;
     }
+
+    public List<String> getShoppingItems() {
+        return shoppingItems;
+    }
+
+    public void setShoppingItems(List<String> shoppingItems) {
+        this.shoppingItems = shoppingItems;
+    }
+
 
 }

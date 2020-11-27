@@ -7,10 +7,7 @@ import com.ezgroceries.repositories.ShoppingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ShoppingListService {
@@ -32,8 +29,34 @@ public class ShoppingListService {
         return shoppingListResource;
     }
 
-    public List<ShoppingListEntity> findAllShoppingLists() {
-        return shoppingListRepository.findAll();
+    public List<ShoppingListResource> findAllShoppingLists() {
+        List<ShoppingListResource> resources = new ArrayList<>();
+        List<String> allIngredients = new ArrayList<>();
+        List<ShoppingListEntity> shoppingLists = shoppingListRepository.findAll();
+        for(ShoppingListEntity x : shoppingLists){
+            System.out.println("Shoppinglist" + x.getShoppingListId());
+            ShoppingListResource resource = new ShoppingListResource(x.getShoppingListId(), x.getName());
+
+            List<CocktailEntity> cocktailList = convertSettoList(x.getCocktails());
+            for(CocktailEntity cocktailEntity: cocktailList) {
+                Set<String> ingredients = cocktailEntity.getIngredients();
+                List<String> ingredientsString = new ArrayList<>(ingredients);
+                System.out.println(ingredientsString);
+                for(String ingredient : ingredientsString)
+                    if (ingredient != null)
+                        allIngredients.add(ingredient);
+                    
+            }
+            resource.setShoppingItems(allIngredients);
+            resources.add(resource);
+            //allIngredients.clear();
+
+        }
+        return resources;
+    }
+
+    private List<CocktailEntity> convertSettoList(Set<CocktailEntity> cocktailEntities){
+        return new ArrayList<>(cocktailEntities);
     }
 
     public ShoppingListEntity findShoppingList(UUID shoppingListId){
