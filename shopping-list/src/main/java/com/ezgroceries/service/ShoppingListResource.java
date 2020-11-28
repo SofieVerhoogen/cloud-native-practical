@@ -2,13 +2,14 @@ package com.ezgroceries.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class ShoppingListResource {
 
     private UUID shoppingListId;
     private String name;
-    private List<String> shoppingItems;
+    private Set<String> shoppingItems;
 
 
     public ShoppingListResource(){}
@@ -34,11 +35,11 @@ public class ShoppingListResource {
         this.name = shoppingListName;
     }
 
-    public List<String> getShoppingItems() {
+    public Set <String> getShoppingItems() {
         return shoppingItems;
     }
 
-    public void setShoppingItems(List<String> shoppingItems) {
+    public void setShoppingItems(Set <String> shoppingItems) {
         this.shoppingItems = shoppingItems;
     }
 

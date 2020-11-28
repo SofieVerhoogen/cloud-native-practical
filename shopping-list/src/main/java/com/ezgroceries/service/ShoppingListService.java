@@ -31,26 +31,21 @@ public class ShoppingListService {
 
     public List<ShoppingListResource> findAllShoppingLists() {
         List<ShoppingListResource> resources = new ArrayList<>();
-        List<String> allIngredients = new ArrayList<>();
         List<ShoppingListEntity> shoppingLists = shoppingListRepository.findAll();
         for(ShoppingListEntity x : shoppingLists){
-            System.out.println("Shoppinglist" + x.getShoppingListId());
+            Set <String> allIngredients = new HashSet<String>();
             ShoppingListResource resource = new ShoppingListResource(x.getShoppingListId(), x.getName());
 
             List<CocktailEntity> cocktailList = convertSettoList(x.getCocktails());
             for(CocktailEntity cocktailEntity: cocktailList) {
                 Set<String> ingredients = cocktailEntity.getIngredients();
-                List<String> ingredientsString = new ArrayList<>(ingredients);
-                System.out.println(ingredientsString);
-                for(String ingredient : ingredientsString)
+                for(String ingredient : ingredients)
                     if (ingredient != null)
                         allIngredients.add(ingredient);
-                    
+
             }
             resource.setShoppingItems(allIngredients);
             resources.add(resource);
-            //allIngredients.clear();
-
         }
         return resources;
     }
@@ -74,19 +69,6 @@ public class ShoppingListService {
         shoppingListEntity.setCocktails(cocktailSet);
         shoppingListRepository.save(shoppingListEntity);
         return shoppingListEntity;
-
-        /**
-
-        for (CocktailEntity x : cocktailList)
-            System.out.println(x.getCocktailName());
-        //    cocktailSet.add(x);
-        for (CocktailEntity x : cocktailSet)
-            System.out.println(x);
-
-        System.out.println("Set" + cocktailSet);
-        shoppingList.setCocktails(cocktailSet);
-        shoppingListRepository.save(shoppingList);
-        return shoppingList;**/
 
     }
 }
