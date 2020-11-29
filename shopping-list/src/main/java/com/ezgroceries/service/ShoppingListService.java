@@ -6,7 +6,7 @@ import com.ezgroceries.repositories.CocktailRepository;
 import com.ezgroceries.repositories.ShoppingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.Optional;
 import java.util.*;
 
 @Service
@@ -32,30 +32,38 @@ public class ShoppingListService {
     public List<ShoppingListResource> findAllShoppingLists() {
         List<ShoppingListResource> resources = new ArrayList<>();
         List<ShoppingListEntity> shoppingLists = shoppingListRepository.findAll();
-        for(ShoppingListEntity x : shoppingLists){
-            Set <String> allIngredients = new HashSet<String>();
+        for(ShoppingListEntity x : shoppingLists) {
             ShoppingListResource resource = new ShoppingListResource(x.getShoppingListId(), x.getName());
-
-            List<CocktailEntity> cocktailList = convertSettoList(x.getCocktails());
-            for(CocktailEntity cocktailEntity: cocktailList) {
-                Set<String> ingredients = cocktailEntity.getIngredients();
-                for(String ingredient : ingredients)
-                    if (ingredient != null)
-                        allIngredients.add(ingredient);
-
-            }
-            resource.setShoppingItems(allIngredients);
+            resource.setShoppingItems(findIngredients(x));
             resources.add(resource);
         }
         return resources;
     }
 
+    private Set<String> findIngredients(ShoppingListEntity shoppingListEntity) {
+        Set<String> allIngredients = new HashSet<String>();
+        Set<CocktailEntity> cocktailEntitySet = shoppingListEntity.getCocktails();
+        List<CocktailEntity> cocktailList = new ArrayList<CocktailEntity>();
+        cocktailList.addAll(cocktailEntitySet);
+        if (cocktailList != null) {
+            for (CocktailEntity cocktailEntity : cocktailList) {
+                Set<String> ingredients = cocktailEntity.getIngredients();
+                for (String ingredient : ingredients)
+                    if (ingredient != null)
+                        allIngredients.add(ingredient);
+            }
+        }
+        return allIngredients;
+    }
     private List<CocktailEntity> convertSettoList(Set<CocktailEntity> cocktailEntities){
+        if (cocktailEntities.isEmpty())
+            return new ArrayList<>();
         return new ArrayList<>(cocktailEntities);
     }
 
-    public ShoppingListEntity findShoppingList(UUID shoppingListId){
-        return shoppingListRepository.findById(shoppingListId);
+    public ShoppingListResource findShoppingList(UUID shoppingListId){
+        ShoppingListEntity entity = shoppingListRepository.findById(shoppingListId);
+        return new ShoppingListResource(entity.getShoppingListId(), entity.getName());
     }
     public List<ShoppingListEntity> getShoppingList(String shoppingListName){
         return shoppingListRepository.findByName(shoppingListName);
@@ -70,5 +78,15 @@ public class ShoppingListService {
         shoppingListRepository.save(shoppingListEntity);
         return shoppingListEntity;
 
+    }
+
+    public List<ShoppingListResource> getAllShoppingLists() {
+        List<ShoppingListResource> resources = new ArrayList<>();
+        List<ShoppingListEntity> shoppingLists = shoppingListRepository.findAll();
+        for(ShoppingListEntity x : shoppingLists){
+            ShoppingListResource resource = new ShoppingListResource(x.getShoppingListId(), x.getName());
+            resources.add(resource);
+        }
+        return resources;
     }
 }

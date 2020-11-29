@@ -25,7 +25,7 @@ public class ShoppinglistController {
     }
 
     @GetMapping(value= "/shopping-lists/{shoppingListId}")
-    public ShoppingListEntity getShoppingList(@PathVariable UUID shoppingListId){
+    public ShoppingListResource getShoppingList(@PathVariable UUID shoppingListId){
         return shoppingListService.findShoppingList(shoppingListId);
     }
 
@@ -36,7 +36,7 @@ public class ShoppinglistController {
 
     @PostMapping(value="/shopping-lists/{shoppingListId}/cocktails")
     public ShoppingListEntity addCocktail(@PathVariable UUID shoppingListId, @RequestBody List<Map<String,String>> cocktails) {
-        ShoppingListEntity shoppingList = shoppingListService.findShoppingList(shoppingListId);
+        //ShoppingListResource shoppingList = shoppingListService.findShoppingList(shoppingListId);
         List<String> cocktailIDs = cocktails.stream()
                 .map(stringStringEntry -> stringStringEntry.get("cocktailId"))
                 .collect(Collectors.toList());
