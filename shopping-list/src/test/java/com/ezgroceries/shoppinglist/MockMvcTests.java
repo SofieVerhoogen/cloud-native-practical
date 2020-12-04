@@ -1,7 +1,7 @@
 package com.ezgroceries.shoppinglist;
 
-import com.ezgroceries.client.CocktailDBClient;
-import com.ezgroceries.client.CocktailDBResponse;
+import com.ezgroceries.services.external.CocktailDBClient;
+import com.ezgroceries.services.external.CocktailDBResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

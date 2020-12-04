@@ -1,4 +1,4 @@
-package com.ezgroceries.converter;
+package com.ezgroceries.services.converter;
 
 import org.springframework.util.CollectionUtils;
 

@@ -1,10 +1,8 @@
-package com.ezgroceries.entities;
+package com.ezgroceries.persistence.entities;
 
-import com.ezgroceries.client.CocktailDBResponse;
-import com.ezgroceries.converter.StringSetConverter;
+import com.ezgroceries.services.converter.StringSetConverter;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

@@ -1,7 +1,6 @@
-package com.ezgroceries.service;
+package com.ezgroceries.services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,7 +16,15 @@ public class ShoppingListResource {
     public ShoppingListResource(UUID shoppingListId , String name){
         this.shoppingListId = shoppingListId;
         this.name = name;
+        this.shoppingItems = new HashSet<String>();
     }
+
+    public ShoppingListResource(UUID shoppingListId , String name, Set<String> shoppingItems){
+        this.shoppingListId = shoppingListId;
+        this.name = name;
+        this.shoppingItems = shoppingItems;
+    }
+
 
     public UUID getShoppingListId() {
         return shoppingListId;

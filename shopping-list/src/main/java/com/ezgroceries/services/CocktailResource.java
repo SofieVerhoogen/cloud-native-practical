@@ -1,4 +1,4 @@
-package com.ezgroceries.service;
+package com.ezgroceries.services;
 
 import java.util.List;
 import java.util.UUID;
