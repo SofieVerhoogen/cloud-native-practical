@@ -23,12 +23,20 @@ public class CocktailEntity {
     @Convert(converter = StringSetConverter.class)
     private Set<String> ingredients;
 
+    private String glass;
+    private String instructions;
+    private String image;
+
+
     public CocktailEntity(){}
 
-    public CocktailEntity(String idDrink, String cocktailName) {
+    public CocktailEntity(String idDrink, String cocktailName, String glass, String instructions, String image) {
         this.cocktailId = UUID.randomUUID();
         this.idDrink = idDrink;
         this.cocktailName = cocktailName;
+        this.glass = glass;
+        this.instructions = instructions;
+        this.image = image;
     }
 
     public UUID getCocktailId() {
@@ -61,5 +69,29 @@ public class CocktailEntity {
 
     public void setIngredients(Set<String> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public String getGlass() {
+        return glass;
+    }
+
+    public void setGlass(String glass) {
+        this.glass = glass;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -29,7 +29,7 @@ public class ShoppingListService {
         List<ShoppingListResource> resources = new ArrayList<>();
         List<ShoppingListEntity> shoppingLists = shoppingListRepository.findAll();
         for(ShoppingListEntity x : shoppingLists) {
-            resources.add(transformToResourceIngredients(x));
+            resources.add(transformToResourceWithIngredients(x));
         }
         return resources;
     }
@@ -46,16 +46,22 @@ public class ShoppingListService {
                     if (ingredient != null)
                         allIngredients.add(ingredient);
             }
+            return allIngredients;
         }
-        return allIngredients;
+        return null;
     }
 
     public ShoppingListResource findShoppingList(UUID shoppingListId){
         ShoppingListEntity entity = shoppingListRepository.findById(shoppingListId);
         return transformToResource(entity);
     }
-    public List<ShoppingListEntity> getShoppingList(String shoppingListName){
-        return shoppingListRepository.findByName(shoppingListName);
+    public List<ShoppingListResource> getShoppingList(String shoppingListName){
+        List<ShoppingListEntity> shoppingLists = shoppingListRepository.findByName(shoppingListName);
+        List<ShoppingListResource> resources = new ArrayList<>();
+        for (ShoppingListEntity entity : shoppingLists) {
+            resources.add(transformToResource(entity));
+        }
+        return resources;
     }
 
     public ShoppingListResource addCocktails(UUID shoppingListId, List<String> cocktails){
@@ -65,7 +71,7 @@ public class ShoppingListService {
         ShoppingListEntity shoppingListEntity = shoppingListRepository.findById(shoppingListId);
         shoppingListEntity.setCocktails(cocktailSet);
         shoppingListRepository.save(shoppingListEntity);
-        return transformToResourceIngredients(shoppingListEntity);
+        return transformToResourceWithIngredients(shoppingListEntity);
 
     }
 
@@ -73,7 +79,7 @@ public class ShoppingListService {
         return new ShoppingListResource(shoppingListEntity.getShoppingListId(), shoppingListEntity.getName());
     }
 
-    private ShoppingListResource transformToResourceIngredients(ShoppingListEntity shoppingListEntity){
+    private ShoppingListResource transformToResourceWithIngredients(ShoppingListEntity shoppingListEntity){
         Set <String> ingredients = findIngredients(shoppingListEntity);
         return new ShoppingListResource(shoppingListEntity.getShoppingListId(), shoppingListEntity.getName(), ingredients);
     }
