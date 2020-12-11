@@ -1,12 +1,10 @@
-package com.ezgroceries.service;
+package com.ezgroceries.services;
 
-import com.ezgroceries.entities.CocktailEntity;
-import com.ezgroceries.entities.ShoppingListEntity;
-import com.ezgroceries.repositories.CocktailRepository;
-import com.ezgroceries.repositories.ShoppingListRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ezgroceries.persistence.entities.CocktailEntity;
+import com.ezgroceries.persistence.entities.ShoppingListEntity;
+import com.ezgroceries.persistence.repositories.ShoppingListRepository;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+
 import java.util.*;
 
 @Service
@@ -24,18 +22,14 @@ public class ShoppingListService {
     public ShoppingListResource create(String shoppingListName) {
         ShoppingListEntity shoppingListEntity = new ShoppingListEntity(shoppingListName);
         shoppingListRepository.save(shoppingListEntity);
-        shoppingListResource.setShoppingListId(shoppingListEntity.getShoppingListId());
-        shoppingListResource.setName(shoppingListEntity.getName());
-        return shoppingListResource;
+        return transformToResource(shoppingListEntity);
     }
 
     public List<ShoppingListResource> findAllShoppingLists() {
         List<ShoppingListResource> resources = new ArrayList<>();
         List<ShoppingListEntity> shoppingLists = shoppingListRepository.findAll();
         for(ShoppingListEntity x : shoppingLists) {
-            ShoppingListResource resource = new ShoppingListResource(x.getShoppingListId(), x.getName());
-            resource.setShoppingItems(findIngredients(x));
-            resources.add(resource);
+            resources.add(transformToResourceWithIngredients(x));
         }
         return resources;
     }
@@ -52,41 +46,43 @@ public class ShoppingListService {
                     if (ingredient != null)
                         allIngredients.add(ingredient);
             }
+            return allIngredients;
         }
-        return allIngredients;
-    }
-    private List<CocktailEntity> convertSettoList(Set<CocktailEntity> cocktailEntities){
-        if (cocktailEntities.isEmpty())
-            return new ArrayList<>();
-        return new ArrayList<>(cocktailEntities);
+        return null;
     }
 
     public ShoppingListResource findShoppingList(UUID shoppingListId){
         ShoppingListEntity entity = shoppingListRepository.findById(shoppingListId);
-        return new ShoppingListResource(entity.getShoppingListId(), entity.getName());
+        return transformToResource(entity);
     }
-    public List<ShoppingListEntity> getShoppingList(String shoppingListName){
-        return shoppingListRepository.findByName(shoppingListName);
+    public List<ShoppingListResource> getShoppingList(String shoppingListName){
+        List<ShoppingListEntity> shoppingLists = shoppingListRepository.findByName(shoppingListName);
+        List<ShoppingListResource> resources = new ArrayList<>();
+        for (ShoppingListEntity entity : shoppingLists) {
+            resources.add(transformToResource(entity));
+        }
+        return resources;
     }
 
-    public ShoppingListEntity addCocktails(UUID shoppingListId, List<String> cocktails){
+    public ShoppingListResource addCocktails(UUID shoppingListId, List<String> cocktails){
         List<CocktailEntity> cocktailList = cocktailService.findByCocktailId(cocktails);
         Set<CocktailEntity> cocktailSet = new HashSet<CocktailEntity>(cocktailList);
         cocktailSet.addAll(cocktailList);
         ShoppingListEntity shoppingListEntity = shoppingListRepository.findById(shoppingListId);
         shoppingListEntity.setCocktails(cocktailSet);
         shoppingListRepository.save(shoppingListEntity);
-        return shoppingListEntity;
+        return transformToResourceWithIngredients(shoppingListEntity);
 
     }
 
-    public List<ShoppingListResource> getAllShoppingLists() {
-        List<ShoppingListResource> resources = new ArrayList<>();
-        List<ShoppingListEntity> shoppingLists = shoppingListRepository.findAll();
-        for(ShoppingListEntity x : shoppingLists){
-            ShoppingListResource resource = new ShoppingListResource(x.getShoppingListId(), x.getName());
-            resources.add(resource);
-        }
-        return resources;
+    private ShoppingListResource transformToResource(ShoppingListEntity shoppingListEntity){
+        return new ShoppingListResource(shoppingListEntity.getShoppingListId(), shoppingListEntity.getName());
     }
+
+    private ShoppingListResource transformToResourceWithIngredients(ShoppingListEntity shoppingListEntity){
+        Set <String> ingredients = findIngredients(shoppingListEntity);
+        return new ShoppingListResource(shoppingListEntity.getShoppingListId(), shoppingListEntity.getName(), ingredients);
+    }
+
+
 }

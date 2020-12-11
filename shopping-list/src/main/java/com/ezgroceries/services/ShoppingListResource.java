@@ -1,7 +1,5 @@
-package com.ezgroceries.service;
+package com.ezgroceries.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,6 +15,12 @@ public class ShoppingListResource {
     public ShoppingListResource(UUID shoppingListId , String name){
         this.shoppingListId = shoppingListId;
         this.name = name;
+    }
+
+    public ShoppingListResource(UUID shoppingListId, String name, Set<String> ingredients) {
+        this.shoppingListId = shoppingListId;
+        this.name = name;
+        this.shoppingItems = ingredients;
     }
 
     public UUID getShoppingListId() {

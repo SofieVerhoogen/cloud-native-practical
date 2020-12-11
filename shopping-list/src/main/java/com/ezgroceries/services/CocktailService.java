@@ -1,11 +1,10 @@
-package com.ezgroceries.service;
+package com.ezgroceries.services;
 
-import com.ezgroceries.client.CocktailDBClient;
-import com.ezgroceries.client.CocktailDBResponse;
-import com.ezgroceries.entities.CocktailEntity;
-import com.ezgroceries.repositories.CocktailRepository;
+import com.ezgroceries.services.external.CocktailDBClient;
+import com.ezgroceries.services.external.CocktailDBResponse;
+import com.ezgroceries.persistence.entities.CocktailEntity;
+import com.ezgroceries.persistence.repositories.CocktailRepository;
 import io.micrometer.core.instrument.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -81,11 +80,6 @@ public class CocktailService {
                 drinkResource.getStrIngredient3(),
                 drinkResource.getStrIngredient4()
         ).filter(StringUtils::isNotBlank).collect(Collectors.toList());
-
-        /**List<String> list = new ArrayList<>();
-        if (drinkResource.getStrIngredient1() != null)
-            list.add(drinkResource.getStrIngredient1());
-        return list;*/
     }
 
     private Set<String> getSetIngredients(CocktailDBResponse.DrinkResource drinkResource) {
@@ -95,10 +89,5 @@ public class CocktailService {
                 drinkResource.getStrIngredient3(),
                 drinkResource.getStrIngredient4()
         ).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
-        /**List<String> list = new ArrayList<>();
-        if (drinkResource.getStrIngredient1() != null)
-            list.add(drinkResource.getStrIngredient1());
-        return new HashSet<>(list);*/
-
     }
 }

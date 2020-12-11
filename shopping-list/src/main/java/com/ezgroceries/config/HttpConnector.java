@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HttpConnector {
 
-    //Custom tomcat configuration, we add an additional connector that allows http traffic next to https
     @Bean
     public ServletWebServerFactory servletContainer(@Value("${server.http.port}") int httpPort) {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);

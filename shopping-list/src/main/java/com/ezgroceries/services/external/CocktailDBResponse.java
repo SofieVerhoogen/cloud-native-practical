@@ -1,4 +1,4 @@
-package com.ezgroceries.client;
+package com.ezgroceries.services.external;
 
 import java.util.List;
 

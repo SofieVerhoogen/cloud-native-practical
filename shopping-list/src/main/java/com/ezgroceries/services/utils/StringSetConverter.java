@@ -1,11 +1,5 @@
-<<<<<<< Updated upstream:shopping-list/src/main/java/com/ezgroceries/converter/StringSetConverter.java
-package com.ezgroceries.converter;
-=======
 package com.ezgroceries.services.utils;
->>>>>>> Stashed changes:shopping-list/src/main/java/com/ezgroceries/service/utils/StringSetConverter.java
-
 import org.springframework.util.CollectionUtils;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.Arrays;

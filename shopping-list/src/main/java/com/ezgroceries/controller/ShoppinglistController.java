@@ -1,9 +1,7 @@
 package com.ezgroceries.controller;
 
-import com.ezgroceries.entities.ShoppingListEntity;
-import com.ezgroceries.service.CocktailResource;
-import com.ezgroceries.service.ShoppingListResource;
-import com.ezgroceries.service.ShoppingListService;
+import com.ezgroceries.services.ShoppingListResource;
+import com.ezgroceries.services.ShoppingListService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -35,17 +33,10 @@ public class ShoppinglistController {
     }
 
     @PostMapping(value="/shopping-lists/{shoppingListId}/cocktails")
-    public ShoppingListEntity addCocktail(@PathVariable UUID shoppingListId, @RequestBody List<Map<String,String>> cocktails) {
-        //ShoppingListResource shoppingList = shoppingListService.findShoppingList(shoppingListId);
+    public ShoppingListResource addCocktail(@PathVariable UUID shoppingListId, @RequestBody List<Map<String,String>> cocktails) {
         List<String> cocktailIDs = cocktails.stream()
                 .map(stringStringEntry -> stringStringEntry.get("cocktailId"))
                 .collect(Collectors.toList());
         return shoppingListService.addCocktails(shoppingListId,cocktailIDs);
-       // for (CocktailResource resource : cocktailResource) {
-       //     if (resource.getCocktailId().equals(cocktailResource.getCocktailId())) {
-       //         shoppingList.setShoppingItems(resource.getIngredients());
-       //     }
-        //}
-        //return cocktailResource.getCocktailId();
-    }
+       }
 }
