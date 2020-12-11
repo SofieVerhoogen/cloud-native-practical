@@ -36,12 +36,12 @@ public class CocktailService {
     public List<CocktailEntity> findByIdDrinkIn(List<String> cocktailIds){
         return cocktailRepository.findByIdDrinkIn(cocktailIds);
     }
-    public List<CocktailResource> searchCocktails(String search) {
+    public List<CocktailResponse> searchCocktails(String search) {
         CocktailDBResponse lists = cocktailDBClient.searchCocktails(search);
         return mergeCocktails(lists.getDrinks());
     }
 
-    public List<CocktailResource> mergeCocktails(List<CocktailDBResponse.DrinkResource> drinks) {
+    public List<CocktailResponse> mergeCocktails(List<CocktailDBResponse.DrinkResource> drinks) {
         //Get all the idDrink attributes
         List<String> ids = drinks.stream().map(CocktailDBResponse.DrinkResource::getIdDrink).collect(Collectors.toList());
 
@@ -67,8 +67,8 @@ public class CocktailService {
         return mergeAndTransform(drinks, allEntityMap);
     }
 
-    private List<CocktailResource> mergeAndTransform(List<CocktailDBResponse.DrinkResource> drinks, Map<String, CocktailEntity> allEntityMap) {
-        return drinks.stream().map(drinkResource -> new CocktailResource(allEntityMap.get(drinkResource.getIdDrink())
+    private List<CocktailResponse> mergeAndTransform(List<CocktailDBResponse.DrinkResource> drinks, Map<String, CocktailEntity> allEntityMap) {
+        return drinks.stream().map(drinkResource -> new CocktailResponse(allEntityMap.get(drinkResource.getIdDrink())
                 .getCocktailId(), drinkResource.getStrDrink(), drinkResource.getStrGlass(),
                 drinkResource.getStrInstructions(), drinkResource.getStrDrinkThumb(), getListIngredients(drinkResource)))
                 .collect(Collectors.toList());

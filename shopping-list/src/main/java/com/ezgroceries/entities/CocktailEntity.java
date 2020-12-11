@@ -1,7 +1,11 @@
 package com.ezgroceries.entities;
 
+<<<<<<< Updated upstream:shopping-list/src/main/java/com/ezgroceries/entities/CocktailEntity.java
 import com.ezgroceries.client.CocktailDBResponse;
 import com.ezgroceries.converter.StringSetConverter;
+=======
+import com.ezgroceries.services.utils.StringSetConverter;
+>>>>>>> Stashed changes:shopping-list/src/main/java/com/ezgroceries/persistence/entities/CocktailEntity.java
 
 import javax.persistence.*;
 import java.util.List;

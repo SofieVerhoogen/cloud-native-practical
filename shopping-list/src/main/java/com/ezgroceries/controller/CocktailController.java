@@ -1,4 +1,5 @@
 package com.ezgroceries.controller;
+<<<<<<< Updated upstream
  import com.ezgroceries.client.CocktailDBClient;
  import com.ezgroceries.client.CocktailDBResponse;
  import com.ezgroceries.service.CocktailResource;
@@ -6,6 +7,10 @@ package com.ezgroceries.controller;
  import com.ezgroceries.service.ShoppingListResource;
  import io.micrometer.core.instrument.util.StringUtils;
  import org.springframework.beans.factory.annotation.Autowired;
+=======
+ import com.ezgroceries.services.CocktailResponse;
+ import com.ezgroceries.services.CocktailService;
+>>>>>>> Stashed changes
  import org.springframework.web.bind.annotation.*;
  import java.util.ArrayList;
  import java.util.Arrays;
@@ -25,7 +30,7 @@ public class CocktailController {
     }
 
     @GetMapping(value= "/cocktails")
-    public List<CocktailResource> get(@RequestParam String search) {
+    public List<CocktailResponse> get(@RequestParam String search) {
         return cocktailService.searchCocktails(search);
     }
 
